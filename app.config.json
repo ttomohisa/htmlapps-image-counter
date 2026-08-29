@@ -1,0 +1,26 @@
+{
+  "$schema": "./schemas/app-config.schema.json",
+  "name": "Image Counter",
+  "nameJa": "画像カウンター",
+  "slug": "image-counter",
+  "version": "1.0.0",
+  "description": "Count objects in photos manually with point and rectangle markers, multi-image projects, local drafts, and offline export.",
+  "descriptionJa": "写真の中のものを点・矩形で手動カウントし、複数画像・途中保存・ローカル出力までブラウザー内で完結する画像カウンターです。",
+  "defaultLanguage": "auto",
+  "repository": {
+    "owner": "ttomohisa",
+    "name": "htmlapps-image-counter"
+  },
+  "build": {
+    "output": "dist/index.html",
+    "blockRuntimeNetwork": true,
+    "selfExtract": {
+      "enabled": true,
+      "output": "dist/index.self-extract.html"
+    },
+    "sizeBudget": {
+      "readableWarningMb": 25,
+      "selfExtractWarningMb": 12
+    }
+  }
+}
