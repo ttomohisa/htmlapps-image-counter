@@ -1,6 +1,7 @@
 param(
   [switch]$ForceDownload,
   [switch]$SkipSelfExtract,
+  [switch]$CheckReleaseAlias,
   [string]$OutputPath = ""
 )
 
@@ -19,6 +20,9 @@ $CacheRoot = Join-Path $Root ".cache"
 $DistRoot = Join-Path $Root "dist"
 
 $OutputPathWasSpecified = -not [string]::IsNullOrWhiteSpace($OutputPath)
+if ($CheckReleaseAlias -and ($OutputPathWasSpecified -or $SkipSelfExtract)) {
+  throw "CheckReleaseAlias requires the default readable and self-extract outputs."
+}
 if ($OutputPathWasSpecified -and -not [System.IO.Path]::IsPathRooted($OutputPath)) {
   $OutputPath = Join-Path $Root $OutputPath
 }
@@ -405,6 +409,15 @@ if ($appConfig.build.PSObject.Properties.Name -contains "sizeBudget" -and $appCo
 }
 
 $outputHash = Get-Sha256FileHex $OutputPath
+if ($CheckReleaseAlias) {
+  # Compare the committed alias before any write can hide stale release bytes.
+  & node --test (Join-Path $Root "scripts\test-release-artifacts.cjs")
+  if ($LASTEXITCODE -ne 0) { throw "Release artifact verification failed. Rebuild and commit image-counter.html." }
+} elseif (-not $OutputPathWasSpecified) {
+  $releaseAliasPath = Join-Path $Root "image-counter.html"
+  Copy-Item -LiteralPath $OutputPath -Destination $releaseAliasPath -Force
+  Write-Step "Synchronized root release alias: $releaseAliasPath"
+}
 $outputSizeMb = [Math]::Round($readableBytes / 1MB, 2)
 Write-Host ""
 Write-Host "[OK] Standalone HTML: $OutputPath" -ForegroundColor Green

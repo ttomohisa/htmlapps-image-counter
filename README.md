@@ -171,6 +171,8 @@ The workflow runs the repository checks before publishing. If Pages is not enabl
 
 ## Development and build layout
 
+The default build also refreshes the tracked `image-counter.html` release alias. Commit that file with source changes. Custom `-OutputPath` builds leave it unchanged. Run `scripts/check-repository.ps1` with Node.js 24 available to verify alias freshness and release/camera regressions; the check reports stale aliases without overwriting them.
+
 Edit `src/index.template.html`, not the generated `dist/index.html`.
 
 ```text

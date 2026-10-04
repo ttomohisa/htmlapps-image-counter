@@ -5,7 +5,7 @@
 - **Name:** Image Counter / 画像カウンター
 - **Version:** 1.0.0
 - **Repository:** `ttomohisa/htmlapps-image-counter`
-- **Distribution:** `dist/index.html` and `dist/index.self-extract.html`
+- **Distribution:** `dist/index.html`, `dist/index.self-extract.html`, and the tracked readable alias `image-counter.html`
 - **Purpose:** Count objects in one or more photos manually by placing point or rectangle markers, without automatic recognition or uploads.
 - **Primary users:** People doing inventory, part counting, inspection, field surveys, photo-based checks, and any task where double-counting or losing the current position is a problem.
 
@@ -196,6 +196,8 @@ Current stable desktop and mobile Chromium, Safari, and Firefox where the used b
 - `dist/index.html` contains no unresolved build placeholders or external runtime URLs.
 - CSP blocks runtime network access.
 - Self-extract payload restores `dist/index.html` byte-for-byte.
+- Default builds synchronize `image-counter.html` with the readable output; custom output builds do not change the alias.
+- Repository checks fail when the tracked alias differs from a fresh readable build, ignoring only the build manifest timestamp.
 - Point marker add/select/move/delete works.
 - Rectangle add/select/move/resize/delete works.
 - A new marker does not show editing controls until selected later.
