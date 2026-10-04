@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Stop camera tracks after cancelled or superseded starts, failed playback, and page exit. Late permission results cannot restart capture in a closed dialog.
+
 ## 1.0.0 — 2026-08-29
 
 Initial Browser Kitty release of Image Counter.

@@ -49,3 +49,5 @@ Before adding or upgrading a package:
 - Confirm every runtime support asset is embedded.
 - Rebuild with a clean cache.
 - Test with the network disabled.
+
+Camera lifecycle: closing the dialog, superseding a start, or leaving the page invalidates pending acquisitions. Acquired tracks are stopped on cancellation or playback failure.

@@ -226,3 +226,5 @@ Bug reports and feature proposals are welcome through GitHub Issues. See [CONTRI
 Copyright © 2026 ttomohisa
 
 Licensed under the [MIT License](LICENSE).
+
+Camera capture stops when its dialog closes. Pending permission requests are discarded and their tracks stopped when they finish.
