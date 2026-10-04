@@ -3,7 +3,13 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const vm = require('node:vm');
 const path = require('node:path');
-const source = fs.readFileSync(path.join(__dirname, '../src/index.template.html'), 'utf8');
+const target = process.env.IMAGE_COUNTER_HTML || path.join(__dirname, '../src/index.template.html');
+let source = fs.readFileSync(target, 'utf8');
+if (source.includes('id="self-extract-payload"')) {
+  const payload = source.match(/<script id="self-extract-payload" type="application\/octet-stream">([A-Za-z0-9+/=\r\n]+)<\/script>/);
+  assert.ok(payload, 'self-extract payload must exist');
+  source = require('node:zlib').gunzipSync(Buffer.from(payload[1], 'base64')).toString('utf8');
+}
 function deferred() { let resolve, reject; const promise = new Promise((a,b) => {resolve=a;reject=b;}); return {promise,resolve,reject}; }
 function setup() {
   const elements = new Map(), pending = [], listeners = {};

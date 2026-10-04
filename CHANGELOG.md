@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Keep the tracked `image-counter.html` release alias synchronized with the readable build. CI rejects stale aliases and exercises camera lifecycle regressions against source, both release formats, and the root alias.
+
 - Stop camera tracks after cancelled or superseded starts, failed playback, and page exit. Late permission results cannot restart capture in a closed dialog.
 
 ## 1.0.0 — 2026-08-29

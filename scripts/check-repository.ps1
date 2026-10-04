@@ -138,8 +138,20 @@ if ([string]::IsNullOrWhiteSpace([string]$app.name)) { throw "app.config.json: n
 if ([string]::IsNullOrWhiteSpace([string]$app.slug)) { throw "app.config.json: slug is required" }
 if ([string]::IsNullOrWhiteSpace([string]$app.version)) { throw "app.config.json: version is required" }
 
-$buildArguments = @{}
+$buildArguments = @{ CheckReleaseAlias = $true }
 if ($ForceDownload) { $buildArguments.ForceDownload = $true }
 & (Join-Path $Root "build-standalone.ps1") @buildArguments
+
+$previousCameraTarget = $env:IMAGE_COUNTER_HTML
+try {
+  foreach ($relative in @("src/index.template.html", "dist/index.html", "image-counter.html", "dist/index.self-extract.html")) {
+    Write-Host "[Test] Camera lifecycle: $relative"
+    $env:IMAGE_COUNTER_HTML = Join-Path $Root $relative
+    & node --test (Join-Path $Root "scripts\test-camera-lifecycle.cjs")
+    if ($LASTEXITCODE -ne 0) { throw "Camera lifecycle tests failed: $relative" }
+  }
+} finally {
+  $env:IMAGE_COUNTER_HTML = $previousCameraTarget
+}
 
 Write-Host "[OK] Repository check passed." -ForegroundColor Green

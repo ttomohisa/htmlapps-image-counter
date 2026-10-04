@@ -171,6 +171,8 @@ result.zip
 
 ## 開発とビルド
 
+既定のビルドでは、配布用の `image-counter.html` も更新します。ソースの変更と一緒にこのファイルをコミットしてください。`-OutputPath` を指定したビルドはこのファイルを変更しません。Node.js 24 が利用できる環境で `scripts/check-repository.ps1` を実行すると、配布ファイルの同期とカメラの回帰テストを検証します。古い配布ファイルは上書きせず、エラーとして報告します。
+
 生成済み `dist/index.html` は直接編集せず、`src/index.template.html` を変更してください。
 
 ```text
