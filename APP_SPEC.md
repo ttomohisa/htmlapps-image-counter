@@ -39,6 +39,7 @@
 - Maximum 35 MB per input image and 220 MB per in-memory project.
 - Support drag-and-drop and clipboard image paste on desktop.
 - Support live camera capture through `getUserMedia()` when available.
+- Closing the camera dialog or leaving the page invalidates pending camera starts and stops tracks; late results cannot restart capture. Playback errors also release the acquired stream.
 - Show a post-capture review with **Retake**, **Use this photo**, and **Use & capture next** before adding a camera image.
 - Fall back to the device camera/file input when live camera access is unavailable.
 

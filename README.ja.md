@@ -226,3 +226,5 @@ GitHub Pages版では最初のHTML取得だけは通信します。ネットワ�
 Copyright © 2026 ttomohisa
 
 このプロジェクトは [MIT License](LICENSE) で公開されています。
+
+カメラ画面を閉じると撮影を停止します。起動待ちのカメラも、取得完了後に停止します。
