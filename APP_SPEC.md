@@ -28,7 +28,7 @@
 7. Correct image visibility if needed with brightness, contrast, grayscale, and 90° rotation. The original image data remains unchanged.
 8. Mark each image complete and continue to the next unfinished image.
 9. Review project-wide totals and per-type totals.
-10. Export a read-only viewer HTML or a ZIP containing CSV files and annotated JPEG images.
+10. Export a read-only viewer HTML or a ZIP containing CSV files with optional annotated JPEG images.
 
 ## 4. Functional requirements
 
@@ -54,6 +54,7 @@
 - Flagged point and rectangle markers show a small amber `!` badge and can be unflagged from the same contextual control.
 - Existing point and rectangle markers can be moved.
 - Selected rectangles show four resize handles and can be resized after creation.
+- A cancelled pointer action discards a pending point/rectangle or restores the moved/resized marker geometry and prior completion state. It must not add history, clear redo, update the project timestamp, or schedule an autosave. Starting a two-pointer pinch abandons an in-progress marker edit in the same way; extra pointers and late cancelled-pointer events cannot commit it.
 - The most recently added marker is visually emphasized briefly.
 - Marker numbering is **per marker type**, while project/image totals remain independent.
 
@@ -121,9 +122,14 @@ Undo and redo must cover marker creation, deletion, movement, rectangle resize, 
 - Download `markers.csv`, `summary.csv`, and all annotated JPEG images as one ZIP. Show a confirmation dialog before the download starts.
 - Embed sufficient project JSON so the viewer HTML can be imported by the main app to continue editing.
 
-### CSV + JPEG ZIP
+### CSV + optional JPEG ZIP
 
-ZIP layout:
+- The editor export card has an accessible **Include annotated JPEGs** checkbox, checked on a fresh page load. Its choice stays only in the current page session, including export-dialog close/reopen and language changes; it is not saved in project settings, drafts, or viewer data.
+- Checked preserves the existing ZIP layout, JPEG names and rendering. Unchecked emits exactly `markers.csv` and `summary.csv`, without image decoding, canvas work, JPEG encoding, or viewer compression.
+- Both modes use the same CSV serializers, UTF-8 BOM, CRLF rows, escaping, column order, original-image coordinates, and counts, including hidden markers/types. The editable output filename and sanitization are shared.
+- Exported viewer HTML keeps its existing CSV + JPEG ZIP behavior.
+
+Default ZIP layout (omit the entire `images/` directory for CSV-only):
 
 ```text
 result.zip
@@ -207,7 +213,9 @@ Current stable desktop and mobile Chromium, Safari, and Firefox where the used b
 - Camera capture presents a review before image acceptance.
 - Draft size/compression controls work when IndexedDB storage is available.
 - Image corrections persist into viewer/export data.
-- App ZIP and viewer ZIP contain CSV + JPEG images with needs-review flags preserved in CSV and annotated images.
+- Default app ZIP and viewer ZIP contain CSV + JPEG images with needs-review flags preserved in CSV and annotated images; unchecking the editor image option produces a two-CSV ZIP with identical CSV bytes.
+- Cancelled point, rectangle, move, and corner-resize actions leave counts, geometry, completion, history, redo, and autosave unchanged at 0/90/180/270 degrees in portrait and landscape. Normal release remains undoable.
+- Repository checks run camera, pointer/cancellation, and ZIP regressions against source, readable, root-alias, and self-extract payload variants.
 - Viewer can download current JPEG and ZIP.
 - Viewer HTML can be imported back into the main app with images and marker data intact.
 - At 390 px viewport width, the application has no page-level horizontal overflow; the canvas type dock and mobile bottom bar remain usable.
