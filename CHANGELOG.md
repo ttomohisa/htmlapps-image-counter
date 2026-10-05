@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Add a session-only **Include annotated JPEGs** option to editor ZIP export. The default preserves CSV + JPEG output; clearing it saves the same two CSV files without processing images.
+- Discard cancelled point/rectangle creation and restore moved/resized geometry and completion without changing history, redo, or autosave. Switching to pinch discards unfinished marker edits, and extra/late pointer events cannot commit them.
+- Add synthetic CSV/ZIP integrity and cancellation regressions across all four app artifacts while retaining camera lifecycle and byte-parity checks.
+
 - Keep the tracked `image-counter.html` release alias synchronized with the readable build. CI rejects stale aliases and exercises camera lifecycle regressions against source, both release formats, and the root alias.
 
 - Stop camera tracks after cancelled or superseded starts, failed playback, and page exit. Late permission results cannot restart capture in a closed dialog.

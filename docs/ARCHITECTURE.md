@@ -22,7 +22,7 @@ dist/build-size-report.json    Generated size and embedded-asset storage report
 
 A default build copies the readable output byte-for-byte to the tracked root alias. Custom `-OutputPath` builds leave that alias unchanged. Commit the regenerated alias with source changes so downstream raw-file consumers receive the current runtime.
 
-The repository check uses `-CheckReleaseAlias` to compare the existing root alias with a fresh build before any alias write, ignoring only the generated manifest timestamp. A stale alias makes CI fail instead of silently repairing the working tree. The same check verifies exact self-extract payload parity and runs camera lifecycle tests against source, readable output, root alias, and unpacked self-extract output. Node.js 24 is installed by each CI build workflow.
+The repository check uses `-CheckReleaseAlias` to compare the existing root alias with a fresh build before any alias write, ignoring only the generated manifest timestamp. A stale alias makes CI fail instead of silently repairing the working tree. The same check verifies exact self-extract payload parity and runs camera lifecycle, counting/cancellation, and ZIP export tests against source, readable output, root alias, and unpacked self-extract output. Node.js 24 is installed by each CI build workflow.
 
 
 ## Reusable component layer

@@ -145,10 +145,12 @@ if ($ForceDownload) { $buildArguments.ForceDownload = $true }
 $previousCameraTarget = $env:IMAGE_COUNTER_HTML
 try {
   foreach ($relative in @("src/index.template.html", "dist/index.html", "image-counter.html", "dist/index.self-extract.html")) {
-    Write-Host "[Test] Camera lifecycle: $relative"
     $env:IMAGE_COUNTER_HTML = Join-Path $Root $relative
-    & node --test (Join-Path $Root "scripts\test-camera-lifecycle.cjs")
-    if ($LASTEXITCODE -ne 0) { throw "Camera lifecycle tests failed: $relative" }
+    foreach ($suite in @("test-camera-lifecycle.cjs", "test-counting-workflow.cjs", "test-export-zip.cjs")) {
+      Write-Host "[Test] ${suite}: $relative"
+      & node --test (Join-Path $Root "scripts\$suite")
+      if ($LASTEXITCODE -ne 0) { throw "${suite} failed: $relative" }
+    }
   }
 } finally {
   $env:IMAGE_COUNTER_HTML = $previousCameraTarget

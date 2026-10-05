@@ -19,14 +19,14 @@ GitHub Pages delivers the initial HTML. After it loads, image decoding, counting
 ## Features
 
 - **Count manually, without losing your place** — Tap to place point markers or drag rectangles around objects. Each marker is one count.
-- **Correct mistakes after counting** — Move point markers, move or resize rectangles, change the marker type, delete a marker, and use Undo / Redo.
+- **Correct mistakes after counting** — Move point markers, move or resize rectangles, change the marker type, delete a marker, and use Undo / Redo. Interrupted pointer actions discard pending counts and restore moved/resized geometry without clearing redo. Starting a pinch also discards an unfinished marker edit.
 - **Switch counting types directly on the image** — Use the translucent type dock on the canvas, or number keys `1`–`9` on desktop. The dock can be minimized when it covers an object.
 - **Flag uncertain items for later review** — Add an independent **Needs review** flag without changing the marker type or count. Images with unresolved review markers cannot be marked complete.
 - **Work through multiple photos** — Add several images, move with thumbnails or `←` / `→`, mark each image complete, and jump to the next incomplete image.
 - **Adjust hard-to-see photos without changing the original** — Brightness, contrast, grayscale, and 90° rotation are non-destructive and are preserved in exports.
 - **Capture photos from the camera** — Review a capture before adding it, retake it, or accept it and continue shooting.
 - **Keep drafts locally** — Autosave to IndexedDB, optionally compress draft image copies to WebP, and see the current project / draft storage size.
-- **Export results in practical formats** — Save a read-only single-HTML viewer, or a ZIP containing `markers.csv`, `summary.csv`, and annotated JPEG images.
+- **Export results in practical formats** — Save a read-only single-HTML viewer, or a ZIP containing `markers.csv` and `summary.csv`, with optional annotated JPEG images.
 - **Share a viewer without giving up the data** — The exported viewer can switch images, toggle marker visibility, show image information and comments, and re-export JPEG / CSV+JPEG ZIP. Import it back into Image Counter to resume editing.
 - **Private, dependency-free runtime** — No account, analytics, remote font, runtime CDN, or image upload. Runtime networking is blocked by CSP with `connect-src 'none'`.
 
@@ -61,7 +61,7 @@ This app currently has no third-party runtime dependencies, so the build does no
 6. Use the flag button to mark an uncertain marker as **Needs review**. Clear all review flags before completing the image.
 7. Use the memo button beside **Complete** to add an image note. On desktop the memo panel can be dragged within the canvas; on mobile it opens below the canvas.
 8. Mark the image complete, then move to the next incomplete image or switch images with thumbnails / arrow keys.
-9. Export a Viewer HTML or a CSV + annotated JPEG ZIP.
+9. Export a Viewer HTML or a results ZIP. Clear **Include annotated JPEGs** to export only the two CSV files.
 
 ### Keyboard shortcuts
 
@@ -119,7 +119,11 @@ To edit again, import the viewer HTML with **Import viewer HTML** in Image Count
 
 ## Export files
 
-### CSV + annotated image ZIP
+### CSV + optional annotated image ZIP
+
+In the editor, **Include annotated JPEGs** is checked by default. Clear it to save only `markers.csv` and `summary.csv` without decoding or rendering images. The choice lasts until the page is reloaded; it is not part of your saved project. CSV contents and editable ZIP filenames stay the same in either mode. The exported viewer still includes JPEGs in its ZIP.
+
+Default contents:
 
 ```text
 result.zip
