@@ -154,6 +154,8 @@ The captured time and its source are preserved in Viewer HTML and CSV exports.
 
 ## Local draft storage
 
+The previous-work banner closes after you successfully open new photos, a sample, or viewer HTML. Cancelling file selection or a failed import keeps the saved work available to continue. Its summary, control names, and tooltips follow the selected Japanese/English language.
+
 Projects are autosaved to IndexedDB on supported browsers. The app can show:
 
 - current project data size

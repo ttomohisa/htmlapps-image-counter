@@ -1,6 +1,13 @@
 # Changelog
 
-## Unreleased
+## 1.0.1 — 2026-10-06
+
+- Localize accessible control names, tooltips, confirmation buttons, camera preview text, and dynamic type-management controls when switching Japanese/English.
+- Dismiss obsolete previous-work offers after a new workspace is accepted, localize the draft summary on language changes, and preserve recovery after cancelled or failed imports.
+- Stage viewer imports before replacing the active project and reject late draft reads/imports after newer work is accepted.
+- Add language and restore-ownership regressions to the source/readable/root-alias/self-extract verification matrix.
+
+## Previously unreleased
 
 - Add a session-only **Include annotated JPEGs** option to editor ZIP export. The default preserves CSV + JPEG output; clearing it saves the same two CSV files without processing images.
 - Discard cancelled point/rectangle creation and restore moved/resized geometry and completion without changing history, redo, or autosave. Switching to pinch discards unfinished marker edits, and extra/late pointer events cannot commit them.
