@@ -3,7 +3,7 @@
   "name": "Image Counter",
   "nameJa": "画像カウンター",
   "slug": "image-counter",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Count objects in photos manually with point and rectangle markers, multi-image projects, local drafts, and offline export.",
   "descriptionJa": "写真の中のものを点・矩形で手動カウントし、複数画像・途中保存・ローカル出力までブラウザー内で完結する画像カウンターです。",
   "defaultLanguage": "auto",
