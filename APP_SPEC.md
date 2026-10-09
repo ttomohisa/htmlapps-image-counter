@@ -3,7 +3,7 @@
 ## 1. Product identity
 
 - **Name:** Image Counter / 画像カウンター
-- **Version:** 1.0.1
+- **Version:** 1.0.2
 - **Repository:** `ttomohisa/htmlapps-image-counter`
 - **Distribution:** `dist/index.html`, `dist/index.self-extract.html`, and the tracked readable alias `image-counter.html`
 - **Purpose:** Count objects in one or more photos manually by placing point or rectangle markers, without automatic recognition or uploads.
@@ -233,3 +233,7 @@ Current stable desktop and mobile Chromium, Safari, and Firefox where the used b
 - Image deletion is a direct current-image header action, is disabled for the last remaining image, and always uses the existing confirmation dialog.
 
 - Persistent canvas instruction bubbles are not shown during normal counting.
+
+## Brand icon consistency
+
+- Brand backgrounds use #16624f with corner radii equal to exactly 25% of each background axis. Preserve foreground artwork, placement, and existing canvas padding across SVG assets, app headers, and embedded favicons.
