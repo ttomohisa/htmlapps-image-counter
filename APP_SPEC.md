@@ -64,6 +64,7 @@
 - Types are switchable directly from the translucent dock along the lower edge of the canvas.
 - Desktop numeric keys `1`–`9` select the corresponding type.
 - Users can add, rename, recolor, hide/show, and delete types.
+- Committing a type name normalizes the existing input without replacing dialog controls, preserving forward/reverse Tab navigation. Hide/Show updates its existing button and translated label/icon without taking focus from another control or dialog.
 - Each type has its own marker visibility toggle.
 - A global marker visibility toggle hides/shows all marker overlays without deleting data.
 - Marker numbers can be shown/hidden.
@@ -178,6 +179,7 @@ result.zip
 - Keyboard focus is visible and motion respects `prefers-reduced-motion`.
 - Header language and Help controls remain visible and reachable from 320 px upward; the title can truncate while the version and action controls retain space.
 - Modal Help locks background scrolling. Its existing scrollable content, native Escape, Close button, and backdrop dismissal remain available; keyboard activation of Build info must not dismiss Help. Shared backdrop dismissal requires the dialog itself as the click target before testing outside coordinates.
+- After Types or Export closes across a desktop/mobile layout change, a hidden or wholly offscreen paired opener can yield focus to its visible desktop/mobile counterpart. This applies only while focus remains on the recorded opener, BODY, or inside that now-closed dialog; a reopened dialog, another modal, or unrelated focused control keeps ownership. Other launchers and ordinary native Tab/BODY stops remain unchanged.
 - Japanese/English switching updates accessible labels, tooltips, camera preview alternative text, confirmation buttons, and dynamic type controls without changing project values or unfinished type-name input.
 
 ## 7. Privacy and network
@@ -221,7 +223,7 @@ Current stable desktop and mobile Chromium, Safari, and Firefox where the used b
 - Image corrections persist into viewer/export data.
 - Default app ZIP and viewer ZIP contain CSV + JPEG images with needs-review flags preserved in CSV and annotated images; unchecking the editor image option produces a two-CSV ZIP with identical CSV bytes.
 - Cancelled point, rectangle, move, and corner-resize actions leave counts, geometry, completion, history, redo, and autosave unchanged at 0/90/180/270 degrees in portrait and landscape. Normal release remains undoable.
-- Repository checks run camera, pointer/cancellation, ZIP, language, restore-ownership, and Help/header regressions against source, readable, root-alias, and self-extract payload variants.
+- Repository checks run camera, pointer/cancellation, ZIP, language, restore-ownership, Help/header, type-dialog focus, and paired-dialog return regressions against source, readable, root-alias, and self-extract payload variants.
 - Viewer can download current JPEG and ZIP.
 - Viewer HTML can be imported back into the main app with images and marker data intact.
 - At 390 px viewport width, the application has no page-level horizontal overflow; the canvas type dock and mobile bottom bar remain usable.
