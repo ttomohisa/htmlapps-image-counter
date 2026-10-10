@@ -66,7 +66,7 @@ test('repeated editor exports honor current option without modifying project set
 });
 test('closing and reopening the export dialog preserves its session-only image choice',()=>{
   const f=fixture({includeImages:false}),before=JSON.stringify(f.c.P);let opens=0;f.$('#exportDlg').showModal=()=>opens++;
-  vm.runInContext(section("$('#exportBtn').onclick=", ";$('#completeBtn').addEventListener")+';',f.c);
+  vm.runInContext(section('function showPairedDialog(', 'function setMarkersVisible(')+section("$('#exportBtn').onclick=", ";$('#completeBtn').addEventListener")+';',f.c);
   f.$('#exportBtn').onclick();assert.equal(f.$('#zipIncludeImages').checked,false);f.$('#mobExport').onclick();assert.equal(opens,2);assert.equal(f.$('#zipIncludeImages').checked,false);assert.equal(JSON.stringify(f.c.P),before);
 });
 test('CSV-only retains all hidden markers, review counts and original coordinates at every rotation',async()=>{

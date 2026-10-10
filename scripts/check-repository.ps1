@@ -146,7 +146,7 @@ $previousCameraTarget = $env:IMAGE_COUNTER_HTML
 try {
   foreach ($relative in @("src/index.template.html", "dist/index.html", "image-counter.html", "dist/index.self-extract.html")) {
     $env:IMAGE_COUNTER_HTML = Join-Path $Root $relative
-    foreach ($suite in @("test-camera-lifecycle.cjs", "test-counting-workflow.cjs", "test-export-zip.cjs", "test-language-restore.cjs")) {
+    foreach ($suite in @("test-camera-lifecycle.cjs", "test-counting-workflow.cjs", "test-export-zip.cjs", "test-language-restore.cjs", "test-help-header.cjs", "test-type-dialog-focus.cjs", "test-dialog-return-focus.cjs")) {
       Write-Host "[Test] ${suite}: $relative"
       & node --test (Join-Path $Root "scripts\$suite")
       if ($LASTEXITCODE -ne 0) { throw "${suite} failed: $relative" }
