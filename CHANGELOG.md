@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.0.3 - 2026-10-10
+
+- Keep the language switch and Help available at narrow widths, reserving room for header actions and the version badge.
+- Lock background scrolling only while modal Help is open.
+- Ignore bubbled child clicks before checking dialog backdrop coordinates so keyboard activation of Build info no longer dismisses Help.
+- Add Help/header handler and CSS-contract regressions to the source/readable/root-alias/self-extract check matrix.
+
 ## 1.0.2 - 2026-10-09
 
 - Normalize brand icon backgrounds to #16624f with exact 25% corner radii across SVG assets, header icons, and embedded favicons, preserving existing artwork.

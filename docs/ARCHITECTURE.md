@@ -22,7 +22,7 @@ dist/build-size-report.json    Generated size and embedded-asset storage report
 
 A default build copies the readable output byte-for-byte to the tracked root alias. Custom `-OutputPath` builds leave that alias unchanged. Commit the regenerated alias with source changes so downstream raw-file consumers receive the current runtime.
 
-The repository check uses `-CheckReleaseAlias` to compare the existing root alias with a fresh build before any alias write, ignoring only the generated manifest timestamp. A stale alias makes CI fail instead of silently repairing the working tree. The same check verifies exact self-extract payload parity and runs camera lifecycle, counting/cancellation, ZIP export, and language/restore-ownership tests against source, readable output, root alias, and unpacked self-extract output. Node.js 24 is installed by each CI build workflow.
+The repository check uses `-CheckReleaseAlias` to compare the existing root alias with a fresh build before any alias write, ignoring only the generated manifest timestamp. A stale alias makes CI fail instead of silently repairing the working tree. The same check verifies exact self-extract payload parity and runs camera lifecycle, counting/cancellation, ZIP export, language/restore-ownership, and Help/header tests against source, readable output, root alias, and unpacked self-extract output. Node.js 24 is installed by each CI build workflow.
 
 
 ## Reusable component layer
@@ -100,3 +100,9 @@ Keep source in one HTML while it remains understandable. When an app grows subst
 ## Restore-offer ownership
 
 The startup draft offer stores only summary metadata. `showWorkspace()` retires that offer and advances its generation after a project is accepted. Startup reads, restore reads/decodes, discard confirmations, and viewer imports check that ownership before committing. Viewer imports normalize and decode the initial image before replacing `P`; failed imports keep the previous project and restore offer. Language changes re-render the summary and declarative accessible attributes without rebuilding editable type inputs.
+
+## Help and header interaction
+
+The header reserves non-shrinking space for language/Help actions and the version badge, while the app title can truncate at narrow widths. Only modal Help locks document scrolling through `html:has(#helpDlg:modal)` and `body:has(#helpDlg:modal)`; closing it releases the lock without saved scroll state. The existing dialog shell and native focus/Escape behavior are unchanged. Shared backdrop handlers ignore descendant targets before checking the dialog rectangle, including zero-coordinate keyboard clicks from the Build info summary.
+
+`node --test scripts/test-help-header.cjs` exercises the actual binding code and CSS contracts without a browser. The repository aggregate applies it to source, readable, root-alias, and unpacked self-extract variants. Native rendering, wheel scrolling, keyboard focus, and short/narrow content reachability still require browser verification.

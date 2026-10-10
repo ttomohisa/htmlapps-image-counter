@@ -3,7 +3,7 @@
 ## 1. Product identity
 
 - **Name:** Image Counter / 画像カウンター
-- **Version:** 1.0.2
+- **Version:** 1.0.3
 - **Repository:** `ttomohisa/htmlapps-image-counter`
 - **Distribution:** `dist/index.html`, `dist/index.self-extract.html`, and the tracked readable alias `image-counter.html`
 - **Purpose:** Count objects in one or more photos manually by placing point or rectangle markers, without automatic recognition or uploads.
@@ -176,6 +176,8 @@ result.zip
 - Advanced display settings remain discoverable but do not dominate the counting workflow.
 - Destructive actions use confirmation where data loss is meaningful; single-marker deletion is immediately undoable.
 - Keyboard focus is visible and motion respects `prefers-reduced-motion`.
+- Header language and Help controls remain visible and reachable from 320 px upward; the title can truncate while the version and action controls retain space.
+- Modal Help locks background scrolling. Its existing scrollable content, native Escape, Close button, and backdrop dismissal remain available; keyboard activation of Build info must not dismiss Help. Shared backdrop dismissal requires the dialog itself as the click target before testing outside coordinates.
 - Japanese/English switching updates accessible labels, tooltips, camera preview alternative text, confirmation buttons, and dynamic type controls without changing project values or unfinished type-name input.
 
 ## 7. Privacy and network
@@ -219,7 +221,7 @@ Current stable desktop and mobile Chromium, Safari, and Firefox where the used b
 - Image corrections persist into viewer/export data.
 - Default app ZIP and viewer ZIP contain CSV + JPEG images with needs-review flags preserved in CSV and annotated images; unchecking the editor image option produces a two-CSV ZIP with identical CSV bytes.
 - Cancelled point, rectangle, move, and corner-resize actions leave counts, geometry, completion, history, redo, and autosave unchanged at 0/90/180/270 degrees in portrait and landscape. Normal release remains undoable.
-- Repository checks run camera, pointer/cancellation, ZIP, language, and restore-ownership regressions against source, readable, root-alias, and self-extract payload variants.
+- Repository checks run camera, pointer/cancellation, ZIP, language, restore-ownership, and Help/header regressions against source, readable, root-alias, and self-extract payload variants.
 - Viewer can download current JPEG and ZIP.
 - Viewer HTML can be imported back into the main app with images and marker data intact.
 - At 390 px viewport width, the application has no page-level horizontal overflow; the canvas type dock and mobile bottom bar remain usable.
