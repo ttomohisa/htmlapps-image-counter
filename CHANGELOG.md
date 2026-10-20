@@ -2,6 +2,9 @@
 
 ## 1.0.4 - 2026-10-21
 
+- Auto-save Undo/Redo results and clear image completion when resetting corrections.
+- Keep exported viewer images, markers, and metadata coherent during rapid navigation and failed decoding; ignore stale results and allow recovery.
+
 - Hide Help Build info and the page footer on mobile widths, keeping desktop access unchanged.
 - Give Help a fixed header and flexible scrollable body so content remains reachable on short screens.
 - Rename Help to “使い方と注意事項” / “How to use & notes” and remove redundant language/dismissal prose without removing those controls.

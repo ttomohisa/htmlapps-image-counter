@@ -76,7 +76,7 @@
 - Contrast.
 - Grayscale amount.
 - 90° left/right rotation.
-- Reset corrections.
+- Reset corrections. Resetting reopens a completed image; Undo/Redo restores corrections and completion together.
 - Corrections are non-destructive and must be preserved in drafts, viewer HTML, JPEG export, and CSV metadata.
 
 ### Multi-image project
@@ -94,6 +94,8 @@
 ### Undo / Redo
 
 Undo and redo must cover marker creation, deletion, movement, rectangle resize, type changes, visibility/display changes where appropriate, image completion, and supported image correction changes.
+
+Undo/Redo must schedule autosave of the restored state, just like direct edits. Empty history stacks do not schedule a save.
 
 ### Local draft and storage
 
@@ -114,7 +116,7 @@ Undo and redo must cover marker creation, deletion, movement, rectangle resize, 
 - Optional WebP compression for embedded viewer images with adjustable quality.
 - Read-only presentation optimized for reviewing results, not editing.
 - Project total, image count, completed image count, needs-review count, and per-type totals at the top.
-- Image thumbnails and image navigation.
+- Image thumbnails and image navigation. Rapid navigation commits only the latest decoded image together with its markers and metadata. Decode failures keep the previously displayed image/state, report a localized error, and allow retry or another selection; current JPEG download stays disabled until an image has loaded.
 - Structured current-image information: filename, captured time and its source, image dimensions, original format/size, completion status, count, and needs-review count.
 - A visually separate Comment card with a comment icon and the image note.
 - Previous/Next controls, thumbnails, and Left/Right arrow-key navigation without unexpected vertical page jumps.

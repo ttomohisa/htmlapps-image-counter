@@ -16,6 +16,9 @@ GitHub Pages delivers the initial HTML. After it loads, image decoding, counting
 
 [![Image Counter screenshot](assets/screenshot-en.png)](https://ttomohisa.github.io/htmlapps-image-counter/)
 
+Undo / Redo results also auto-save. Resetting image corrections returns the image to in-progress. During rapid viewer navigation, images and counts switch together; a decoding failure keeps the previous image and lets you retry or select another.
+
+
 ## Features
 
 - **Count manually, without losing your place** — Tap to place point markers or drag rectangles around objects. Each marker is one count.
