@@ -63,7 +63,7 @@ This app currently has no third-party runtime dependencies, so the build does no
 8. Mark the image complete, then move to the next incomplete image or switch images with thumbnails / arrow keys.
 9. Export a Viewer HTML or a results ZIP. Clear **Include annotated JPEGs** to export only the two CSV files.
 
-The top-right EN / JA and Help controls remain available on narrow screens. Help keeps the background from scrolling; its Build info section also works with the keyboard. Use the close button, Esc, or a click outside the dialog to dismiss it.
+The top-right EN / JA and Help controls remain available on narrow screens. **How to use & notes** keeps its heading visible while the contents scroll to the end. On mobile, the start screen has full-width photo/camera buttons; Build info and the page footer are hidden. Build info remains available on desktop. Language switching and all Help close controls are unchanged.
 
 ### Keyboard shortcuts
 

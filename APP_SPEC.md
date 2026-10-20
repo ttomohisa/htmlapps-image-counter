@@ -3,7 +3,7 @@
 ## 1. Product identity
 
 - **Name:** Image Counter / 画像カウンター
-- **Version:** 1.0.3
+- **Version:** 1.0.4
 - **Repository:** `ttomohisa/htmlapps-image-counter`
 - **Distribution:** `dist/index.html`, `dist/index.self-extract.html`, and the tracked readable alias `image-counter.html`
 - **Purpose:** Count objects in one or more photos manually by placing point or rectangle markers, without automatic recognition or uploads.
@@ -178,7 +178,9 @@ result.zip
 - Destructive actions use confirmation where data loss is meaningful; single-marker deletion is immediately undoable.
 - Keyboard focus is visible and motion respects `prefers-reduced-motion`.
 - Header language and Help controls remain visible and reachable from 320 px upward; the title can truncate while the version and action controls retain space.
-- Modal Help locks background scrolling. Its existing scrollable content, native Escape, Close button, and backdrop dismissal remain available; keyboard activation of Build info must not dismiss Help. Shared backdrop dismissal requires the dialog itself as the click target before testing outside coordinates.
+- Help is titled **使い方と注意事項 / How to use & notes**. A non-shrinking header and flexible, scrollable body share the dialog height, keeping the final paragraph reachable on short screens. Native Escape, Close button, backdrop dismissal, and the modal background-scroll lock remain available. The redundant language-switch/close-instructions paragraph is not displayed.
+- At widths up to 760 px, hide the Help Build info section and page footer; retain both on wider screens. An expanded desktop Build info section must not clip Help after resizing. Keyboard activation of desktop Build info must not dismiss Help.
+- At widths up to 760 px, the start card uses a compact, left-aligned introduction, full-width stacked photo/camera actions and a separate two-column row for import/sample (stacked up to 380 px). Hide desktop-only drop/paste instructions on mobile. Keep the start screen free of bottom-bar space when no workspace is open.
 - After Types or Export closes across a desktop/mobile layout change, a hidden or wholly offscreen paired opener can yield focus to its visible desktop/mobile counterpart. This applies only while focus remains on the recorded opener, BODY, or inside that now-closed dialog; a reopened dialog, another modal, or unrelated focused control keeps ownership. Other launchers and ordinary native Tab/BODY stops remain unchanged.
 - Japanese/English switching updates accessible labels, tooltips, camera preview alternative text, confirmation buttons, and dynamic type controls without changing project values or unfinished type-name input.
 
