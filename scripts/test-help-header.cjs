@@ -13,7 +13,7 @@ if (source.includes('id="self-extract-payload"')) {
 const css = source.match(/<style>([\s\S]*?)<\/style>/)[1];
 function declarations(selector) {
   const escaped = selector.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  const rule = css.match(new RegExp(`(?:^|[{}])\\s*${escaped}\\s*\\{([^{}]*)\\}`));
+  const rule = css.replace(/\/\*[\s\S]*?\*\//g, '').match(new RegExp(`(?:^|[{}])\\s*${escaped}\\s*\\{([^{}]*)\\}`));
   assert.ok(rule, `CSS contract: ${selector}`);
   return rule[1];
 }
@@ -111,7 +111,7 @@ test('language binding still switches and saves both directions', () => {
 });
 
 test('background overflow lock is scoped to modal Help on both document roots', () => {
-  const locks = [...css.matchAll(/([^{}]+)\{([^{}]*)\}/g)].filter(([, selector]) => selector.includes(':has('));
+  const locks = [...css.matchAll(/([^{}]+)\{([^{}]*)\}/g)].filter(([, selector]) => selector.includes(':has(#helpDlg:modal)'));
   assert.equal(locks.length, 1, 'one narrowly scoped modal Help lock');
   assert.deepEqual(locks[0][1].trim().split(',').map(s => s.trim()), ['html:has(#helpDlg:modal)', 'body:has(#helpDlg:modal)']);
   assert.match(locks[0][2], /(?:^|;)overflow:hidden(?:;|$)/);
@@ -137,13 +137,35 @@ test('brand title can shrink while version and header controls keep their alloca
   assert.match(declarations('.head-actions'), /(?:^|;)flex:none(?:;|$)/);
 });
 
-test('Help includes bilingual header and dismissal guidance within its editable markers', () => {
+test('Help title includes notes and removes redundant navigation prose in both languages', () => {
   const help = source.split('<!-- APP:HELP:BEGIN -->')[1].split('<!-- APP:HELP:END -->')[0];
-  assert.match(help, /data-i18n="helpNavigationNote"/);
+  assert.doesNotMatch(help, /helpNavigationNote|右上のEN \/ JA/);
   const translations = vm.runInNewContext(source.slice(source.indexOf('const I18N='), source.indexOf('\nlet lang=')) + '\nI18N;');
-  for (const language of ['ja', 'en']) {
-    assert.equal(typeof translations[language].helpNavigationNote, 'string');
-    assert.match(translations[language].helpNavigationNote, /EN.*JA/);
-    assert.match(translations[language].helpNavigationNote, /Esc/);
-  }
+  assert.equal(translations.ja.help, '使い方と注意事項');
+  assert.equal(translations.en.help, 'How to use & notes');
+  assert.match(source, /<h2 data-i18n="help">使い方と注意事項<\/h2>/);
+  for (const language of ['ja', 'en']) assert.equal(translations[language].helpNavigationNote, undefined);
+});
+
+test('Help allocates the available height between a fixed header and scrollable body', () => {
+  assert.match(declarations('#helpDlg[open]'), /display:flex/);
+  assert.match(declarations('#helpDlg[open]'), /flex-direction:column/);
+  assert.match(declarations('#helpDlg>.dlg-head'), /flex:none/);
+  const body = declarations('#helpDlg>.dlg-body');
+  assert.match(body, /min-height:0/);
+  assert.match(body, /max-height:none/);
+  assert.match(body, /overflow:auto/);
+  assert.match(body, /flex:1 1 auto/);
+});
+
+test('mobile help/build/footer and start layout are scoped to mobile widths', () => {
+  const mobile = css.match(/\/\* Mobile start and Help layout \*\/([\s\S]*?)\/\* End mobile start and Help layout \*\//)?.[1];
+  assert.ok(mobile, 'dedicated responsive scope');
+  assert.match(mobile, /@media\(max-width:760px\)/);
+  assert.match(mobile, /#helpDlg \.build,body>footer\{display:none\}/);
+  assert.match(mobile, /\.start-actions\{[^}]*grid-template-columns:minmax\(0,1fr\)[^}]*justify-content:stretch/);
+  assert.match(mobile, /\.start-actions \.btn,\.start-secondary \.btn\{[^}]*width:100%[^}]*min-height:44px/);
+  assert.match(mobile, /\.start-secondary\{[^}]*grid-template-columns:repeat\(2,minmax\(0,1fr\)\)/);
+  assert.match(mobile, /@media\(max-width:380px\)\{\.start-secondary\{grid-template-columns:minmax\(0,1fr\)\}/);
+  assert.match(mobile, /\.start \.drop-hint\{display:none\}/);
 });

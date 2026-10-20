@@ -1,5 +1,20 @@
 # Changelog
 
+## 1.0.4 - 2026-10-21
+
+- Auto-save Undo/Redo results and clear image completion when resetting corrections.
+- Keep exported viewer images, markers, and metadata coherent during rapid navigation and failed decoding; ignore stale results and allow recovery.
+- Keep minimum-size corner resizes inside image bounds and restore narrowly recognized legacy native edge-overhang rectangles without relaxing other import geometry checks.
+
+- Validate viewer project schema, identity, embedded raster payloads, geometry, references, and resource budgets before accepting an import; preserve current work on failure.
+- Protect formula-like CSV text consistently in editor and exported viewer, retaining numeric fields and documenting visible apostrophe behavior.
+
+- Hide Help Build info and the page footer on mobile widths, keeping desktop access unchanged.
+- Give Help a fixed header and flexible scrollable body so content remains reachable on short screens.
+- Rename Help to “使い方と注意事項” / “How to use & notes” and remove redundant language/dismissal prose without removing those controls.
+- Reorganize the mobile start card with full-width photo/camera actions, a separate import/sample row, compact spacing, and no desktop-only drop hint.
+- Add responsive and bilingual Help regressions across all four generated/source variants.
+
 ## 1.0.3 - 2026-10-10
 
 - Keep type-name inputs and Hide/Show buttons in place so name commits preserve natural Tab navigation and visibility toggles retain keyboard focus. Add handler-level focus, normalization, ownership, and data/history regressions to the four-artifact check matrix.

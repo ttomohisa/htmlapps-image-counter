@@ -11,7 +11,7 @@ function section(start, end) {
 }
 function deferred() { let resolve, reject; const promise = new Promise((a,b) => { resolve=a; reject=b; }); return {promise,resolve,reject}; }
 function project(title='Previous') {
-  return {title,updatedAt:Date.UTC(2026,9,6,4,59),categories:[{id:'one',name:'Keep my name',color:'#d15c52',visible:true}],images:[{id:'image',name:'synthetic.png',dataUrl:'data:image/png;base64,AA==',width:800,height:600,markers:[{id:'marker',categoryId:'one',x:.2,y:.3,needsReview:true}],note:'Keep my note',completed:false}]};
+  return {app:'image-counter',schemaVersion:4,title,updatedAt:Date.UTC(2026,9,6,4,59),categories:[{id:'one',name:'Keep my name',color:'#d15c52',visible:true}],images:[{id:'image',name:'synthetic.png',dataUrl:'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+jRZkAAAAASUVORK5CYII=',width:800,height:600,markers:[{id:'marker',shape:'point',categoryId:'one',x:.2,y:.3,needsReview:true}],note:'Keep my note',completed:false}]};
 }
 function setup() {
   const nodes=[], messages=[], writes=[];
@@ -33,7 +33,7 @@ function setup() {
   const $$=selector=>nodes.filter(el=>selector.startsWith('#')?el.attrs.id===selector.slice(1):selector.startsWith('.')?(el.attrs.class||'').split(' ').includes(selector.slice(1)):selector.startsWith('[')?selector.slice(1,-1) in el.attrs:false);
   const $=selector=>{const e=$$(selector)[0];assert.ok(e,selector);return e};
   let dbRead=async()=>structuredClone(project()),decode=async()=>({naturalWidth:800,naturalHeight:600}),confirm=async()=>false,record=async f=>({...project('New').images[0],name:f.name});
-  const context={$, $$,console:{error(){}},document:{documentElement:{},createElement:element},navigator:{language:'ja'},localStorage:{getItem(){return 'ja'}},APP_CONFIG:{slug:'image-counter',version:'1.0.0'},BUILD_MANIFEST:{},COLORS:['#d15c52','#16624f'],MAX_IMAGES:30,MAX_PROJECT_BYTES:220*1024*1024,Date,Intl,Blob,Map,Math,structuredClone,
+  const context={$, $$,console:{error(){}},document:{documentElement:{},createElement:element},navigator:{language:'ja'},localStorage:{getItem(){return 'ja'}},APP_CONFIG:{slug:'image-counter',version:'1.0.0'},BUILD_MANIFEST:{},COLORS:['#d15c52','#16624f'],MAX_IMAGES:30,MAX_FILE_BYTES:35*1024*1024,MAX_VIEWER_FILE_BYTES:661*1024*1024,atob,MAX_PROJECT_BYTES:220*1024*1024,Date,Intl,Blob,Map,Math,structuredClone,
     id:()=>`id-${nodes.length}`,renderAll(){},renderStorage(){},resizeCanvas(){},fitView(){},updateHistoryButtons(){},requestAnimationFrame(){},setTimeout(){},touch(){writes.push('save')},projectBytes:()=>0,dataUrlBytes:()=>1,loadImage:(...args)=>decode(...args),fileToRecord:(...args)=>record(...args),dbGet:()=>dbRead(),dbDel:async()=>writes.push('delete'),Toast:{show:msg=>messages.push(msg)},Confirm:{ask:(...args)=>confirm(...args)},
     DOMParser:class{parseFromString(text){return{querySelector(){const m=text.match(/<script id="imageCounterProject"[^>]*>([\s\S]*)<\/script>/);return m?{textContent:m[1]}:null}}}}};
   const c=vm.createContext(context);
@@ -41,10 +41,10 @@ function setup() {
     section('const I18N=', 'const Toast='),section('function defaultSettings()', 'function cloneLight()'),
     section('async function saveDraft(', 'function formatCapturedAt('),section('async function addFiles(', 'function displayDims('),
     section('function syncCatDock()', 'function renderCategoryButtons('),section('function openTypes(', 'function setMarkersVisible('),
-    section('async function importViewerFile(', 'async function startCamera('),section('async function sampleProject()', "$('#chooseStart').onclick="),
+    section('function parseViewerProject(', 'async function startCamera('),section('async function sampleProject()', "$('#chooseStart').onclick="),
     section("$('#restoreDraft').onclick=", "document.addEventListener('dragover'"),section('async function init()', '\ninit();'),
   ].join('\n'),c);
-  return {c,$,$$,messages,writes,read:expr=>vm.runInContext(expr,c),lang:value=>{vm.runInContext(`lang=${JSON.stringify(value)};applyLang()`,c)},seed:value=>{c.seed=structuredClone(value);vm.runInContext('P=normalizeProject(seed);activeImageId=P.images[0].id;activeCategoryId=P.categories[0].id',c)},db:fn=>dbRead=fn,decode:fn=>decode=fn,confirm:fn=>confirm=fn,record:fn=>record=fn,import:async value=>c.importViewerFile({text:async()=>`<script id="imageCounterProject" type="application/json">${JSON.stringify(value)}</script>`})};
+  return {c,$,$$,messages,writes,read:expr=>vm.runInContext(expr,c),lang:value=>{vm.runInContext(`lang=${JSON.stringify(value)};applyLang()`,c)},seed:value=>{c.seed=structuredClone(value);vm.runInContext('P=normalizeProject(seed);activeImageId=P.images[0].id;activeCategoryId=P.categories[0].id',c)},db:fn=>dbRead=fn,decode:fn=>decode=fn,confirm:fn=>confirm=fn,record:fn=>record=fn,import:async value=>c.importViewerFile({size:1024,text:async()=>`<script id="imageCounterProject" type="application/json">${JSON.stringify(value)}</script>`})};
 }
 
 test('language changes localize every static accessible label and tooltip in both directions',()=>{
@@ -89,8 +89,8 @@ test('successful viewer import retires the old restore offer and preserves edita
 for(const failure of ['missing','invalid JSON','empty images','decode'])test(`failed viewer import keeps prior work and its restore offer: ${failure}`,async()=>{
   const f=setup();await f.c.init();f.seed(project('Current'));const before=f.read('JSON.stringify(P)');
   if(failure==='decode')f.decode(async()=>{throw new Error('decode')});
-  if(failure==='missing')await f.c.importViewerFile({text:async()=>'<p>no project</p>'});
-  else if(failure==='invalid JSON')await f.c.importViewerFile({text:async()=>'<script id="imageCounterProject">{</script>'});
+  if(failure==='missing')await f.c.importViewerFile({size:1024,text:async()=>'<p>no project</p>'});
+  else if(failure==='invalid JSON')await f.c.importViewerFile({size:1024,text:async()=>'<script id="imageCounterProject">{</script>'});
   else await f.import(failure==='empty images'?{images:[]}:project('Invalid'));
   assert.equal(f.$('#restoreBanner').hidden,false);assert.equal(f.read('JSON.stringify(P)'),before);assert.deepEqual(f.writes,[]);
 });

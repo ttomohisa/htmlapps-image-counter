@@ -16,6 +16,9 @@ GitHub Pages delivers the initial HTML. After it loads, image decoding, counting
 
 [![Image Counter screenshot](assets/screenshot-en.png)](https://ttomohisa.github.io/htmlapps-image-counter/)
 
+Undo / Redo results also auto-save. Resetting image corrections returns the image to in-progress. During rapid viewer navigation, images and counts switch together; a decoding failure keeps the previous image and lets you retry or select another.
+
+
 ## Features
 
 - **Count manually, without losing your place** — Tap to place point markers or drag rectangles around objects. Each marker is one count.
@@ -63,7 +66,7 @@ This app currently has no third-party runtime dependencies, so the build does no
 8. Mark the image complete, then move to the next incomplete image or switch images with thumbnails / arrow keys.
 9. Export a Viewer HTML or a results ZIP. Clear **Include annotated JPEGs** to export only the two CSV files.
 
-The top-right EN / JA and Help controls remain available on narrow screens. Help keeps the background from scrolling; its Build info section also works with the keyboard. Use the close button, Esc, or a click outside the dialog to dismiss it.
+The top-right EN / JA and Help controls remain available on narrow screens. **How to use & notes** keeps its heading visible while the contents scroll to the end. On mobile, the start screen has full-width photo/camera buttons; Build info and the page footer are hidden. Build info remains available on desktop. Language switching and all Help close controls are unchanged.
 
 ### Keyboard shortcuts
 
@@ -238,3 +241,9 @@ Copyright © 2026 ttomohisa
 Licensed under the [MIT License](LICENSE).
 
 Camera capture stops when its dialog closes. Pending permission requests are discarded and their tracks stopped when they finish.
+
+### Safe imports and spreadsheet text
+
+Viewer HTML imports validate the native project format and embedded raster images before replacing your work. SVG/external images, invalid data, more than 30 images, payloads over 35 MiB per image or projects over the 220 MiB image-plus-metadata budget are rejected. The HTML file itself has a 661 MiB pre-read ceiling allowing encoding overhead. Large files may still exceed your browser’s available memory. Existing oversized or SVG-based exports need reducing/converting first.
+
+CSV text that resembles a formula is prefixed with an apostrophe in both editor and viewer exports. Numbers remain numeric; your project text is unchanged. Some spreadsheet programs display the apostrophe. Do not strip this protection from untrusted text.

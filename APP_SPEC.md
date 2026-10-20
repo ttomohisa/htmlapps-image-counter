@@ -3,7 +3,7 @@
 ## 1. Product identity
 
 - **Name:** Image Counter / 画像カウンター
-- **Version:** 1.0.3
+- **Version:** 1.0.4
 - **Repository:** `ttomohisa/htmlapps-image-counter`
 - **Distribution:** `dist/index.html`, `dist/index.self-extract.html`, and the tracked readable alias `image-counter.html`
 - **Purpose:** Count objects in one or more photos manually by placing point or rectangle markers, without automatic recognition or uploads.
@@ -76,7 +76,7 @@
 - Contrast.
 - Grayscale amount.
 - 90° left/right rotation.
-- Reset corrections.
+- Reset corrections. Resetting reopens a completed image; Undo/Redo restores corrections and completion together.
 - Corrections are non-destructive and must be preserved in drafts, viewer HTML, JPEG export, and CSV metadata.
 
 ### Multi-image project
@@ -94,6 +94,8 @@
 ### Undo / Redo
 
 Undo and redo must cover marker creation, deletion, movement, rectangle resize, type changes, visibility/display changes where appropriate, image completion, and supported image correction changes.
+
+Undo/Redo must schedule autosave of the restored state, just like direct edits. Empty history stacks do not schedule a save.
 
 ### Local draft and storage
 
@@ -114,7 +116,7 @@ Undo and redo must cover marker creation, deletion, movement, rectangle resize, 
 - Optional WebP compression for embedded viewer images with adjustable quality.
 - Read-only presentation optimized for reviewing results, not editing.
 - Project total, image count, completed image count, needs-review count, and per-type totals at the top.
-- Image thumbnails and image navigation.
+- Image thumbnails and image navigation. Rapid navigation commits only the latest decoded image together with its markers and metadata. Decode failures keep the previously displayed image/state, report a localized error, and allow retry or another selection; current JPEG download stays disabled until an image has loaded.
 - Structured current-image information: filename, captured time and its source, image dimensions, original format/size, completion status, count, and needs-review count.
 - A visually separate Comment card with a comment icon and the image note.
 - Previous/Next controls, thumbnails, and Left/Right arrow-key navigation without unexpected vertical page jumps.
@@ -178,7 +180,9 @@ result.zip
 - Destructive actions use confirmation where data loss is meaningful; single-marker deletion is immediately undoable.
 - Keyboard focus is visible and motion respects `prefers-reduced-motion`.
 - Header language and Help controls remain visible and reachable from 320 px upward; the title can truncate while the version and action controls retain space.
-- Modal Help locks background scrolling. Its existing scrollable content, native Escape, Close button, and backdrop dismissal remain available; keyboard activation of Build info must not dismiss Help. Shared backdrop dismissal requires the dialog itself as the click target before testing outside coordinates.
+- Help is titled **使い方と注意事項 / How to use & notes**. A non-shrinking header and flexible, scrollable body share the dialog height, keeping the final paragraph reachable on short screens. Native Escape, Close button, backdrop dismissal, and the modal background-scroll lock remain available. The redundant language-switch/close-instructions paragraph is not displayed.
+- At widths up to 760 px, hide the Help Build info section and page footer; retain both on wider screens. An expanded desktop Build info section must not clip Help after resizing. Keyboard activation of desktop Build info must not dismiss Help.
+- At widths up to 760 px, the start card uses a compact, left-aligned introduction, full-width stacked photo/camera actions and a separate two-column row for import/sample (stacked up to 380 px). Hide desktop-only drop/paste instructions on mobile. Keep the start screen free of bottom-bar space when no workspace is open.
 - After Types or Export closes across a desktop/mobile layout change, a hidden or wholly offscreen paired opener can yield focus to its visible desktop/mobile counterpart. This applies only while focus remains on the recorded opener, BODY, or inside that now-closed dialog; a reopened dialog, another modal, or unrelated focused control keeps ownership. Other launchers and ordinary native Tab/BODY stops remain unchanged.
 - Japanese/English switching updates accessible labels, tooltips, camera preview alternative text, confirmation buttons, and dynamic type controls without changing project values or unfinished type-name input.
 
@@ -241,3 +245,11 @@ Current stable desktop and mobile Chromium, Safari, and Firefox where the used b
 ## Brand icon consistency
 
 - Brand backgrounds use #16624f with corner radii equal to exactly 25% of each background axis. Preserve foreground artwork, placement, and existing canvas padding across SVG assets, app headers, and embedded favicons.
+
+## Import validation and spreadsheet safety
+
+Viewer imports accept the native app identifier and schema version 4 only; local unversioned drafts retain compatible optional defaults. Validate types, unique IDs, category references, finite geometry/settings/dates, embedded raster signatures, 30-image count, 35 MiB actual bytes per image, and 220 MiB aggregate image-plus-metadata budget before committing. Reject external image URLs and SVG. Pre-read HTML ceiling is 661 MiB to accommodate JSON/base64 expansion and the viewer shell. Failed validation must preserve active work and the restore offer. Logical image dimensions remain independent of compressed dimensions. Previously oversized or SVG-based exports/drafts are not accepted under the stricter policy.
+
+Editor and viewer CSV use the same serializer: formula-like text receives a leading apostrophe before CSV escaping; actual numbers keep numeric meaning, and project text remains unchanged. The apostrophe may be visible in spreadsheet programs. Repository checks exercise these boundaries and normal native roundtrips in all four source/release variants.
+
+Compatibility exception: the former native resize handler could create an exact 0.003-wide/high rectangle extending past the right/bottom image edge by at most 0.003. Import/restore moves only that affected origin inward, retaining its minimum size. Out-of-range origins and other oversized rectangles still fail validation. New resizes keep the minimum rectangle fully inside the image.
