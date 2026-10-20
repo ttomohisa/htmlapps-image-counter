@@ -4,6 +4,8 @@
 
 - Auto-save Undo/Redo results and clear image completion when resetting corrections.
 - Keep exported viewer images, markers, and metadata coherent during rapid navigation and failed decoding; ignore stale results and allow recovery.
+- Keep minimum-size corner resizes inside image bounds and restore narrowly recognized legacy native edge-overhang rectangles without relaxing other import geometry checks.
+
 - Validate viewer project schema, identity, embedded raster payloads, geometry, references, and resource budgets before accepting an import; preserve current work on failure.
 - Protect formula-like CSV text consistently in editor and exported viewer, retaining numeric fields and documenting visible apostrophe behavior.
 

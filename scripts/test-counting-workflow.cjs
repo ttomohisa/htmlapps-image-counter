@@ -111,3 +111,10 @@ test('outside-image and tiny rectangle gestures do not add counts',()=>{
   const f=fixture();f.handlers.pointerdown({pointerId:1,clientX:-30,clientY:-30});f.handlers.pointercancel({pointerId:1,clientX:-30,clientY:-30});assert.equal(f.c.P.images[0].markers.length,0);
   f.c.mode='rect';f.send('pointerdown',.2,.2);f.send('pointermove',.2001,.2001);f.send('pointerup',.2001,.2001);assert.equal(f.c.P.images[0].markers.length,0);assert.equal(f.saves(),0);
 });
+for(const rotation of [0,90,180,270])for(const handle of ['tl','tr','br','bl'])test(`minimum ${handle} resize stays within the image and remains undoable at ${rotation} degrees`,()=>{
+  const original={...rect,x:.8,y:.8,w:.2,h:.2},f=fixture(rotation,'rect',[original]);f.c.selectedMarkerId=original.id;
+  const x=handle.includes('l')?.8:1,y=handle.includes('t')?.8:1,tx=handle.includes('l')?1:.8,ty=handle.includes('t')?1:.8;
+  f.send('pointerdown',x,y);assert.equal(f.c.interaction.type,'resize');f.send('pointermove',tx,ty);f.send('pointerup',tx,ty);
+  const resized=f.c.P.images[0].markers[0];assert.equal(resized.w,.003);assert.equal(resized.h,.003);assert.ok(resized.x>=0&&resized.y>=0&&resized.x+resized.w<=1&&resized.y+resized.h<=1);assert.equal(f.c.history.length,1);assert.equal(f.saves(),1);
+  f.c.undo();assert.equal(f.c.P.images[0].markers[0].w,.2);f.c.redo();assert.equal(f.c.P.images[0].markers[0].w,.003);
+});
