@@ -4,6 +4,8 @@
 
 - Auto-save Undo/Redo results and clear image completion when resetting corrections.
 - Keep exported viewer images, markers, and metadata coherent during rapid navigation and failed decoding; ignore stale results and allow recovery.
+- Validate viewer project schema, identity, embedded raster payloads, geometry, references, and resource budgets before accepting an import; preserve current work on failure.
+- Protect formula-like CSV text consistently in editor and exported viewer, retaining numeric fields and documenting visible apostrophe behavior.
 
 - Hide Help Build info and the page footer on mobile widths, keeping desktop access unchanged.
 - Give Help a fixed header and flexible scrollable body so content remains reachable on short screens.

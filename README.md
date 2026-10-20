@@ -241,3 +241,9 @@ Copyright © 2026 ttomohisa
 Licensed under the [MIT License](LICENSE).
 
 Camera capture stops when its dialog closes. Pending permission requests are discarded and their tracks stopped when they finish.
+
+### Safe imports and spreadsheet text
+
+Viewer HTML imports validate the native project format and embedded raster images before replacing your work. SVG/external images, invalid data, more than 30 images, payloads over 35 MiB per image or projects over the 220 MiB image-plus-metadata budget are rejected. The HTML file itself has a 661 MiB pre-read ceiling allowing encoding overhead. Large files may still exceed your browser’s available memory. Existing oversized or SVG-based exports need reducing/converting first.
+
+CSV text that resembles a formula is prefixed with an apostrophe in both editor and viewer exports. Numbers remain numeric; your project text is unchanged. Some spreadsheet programs display the apostrophe. Do not strip this protection from untrusted text.

@@ -245,3 +245,9 @@ Current stable desktop and mobile Chromium, Safari, and Firefox where the used b
 ## Brand icon consistency
 
 - Brand backgrounds use #16624f with corner radii equal to exactly 25% of each background axis. Preserve foreground artwork, placement, and existing canvas padding across SVG assets, app headers, and embedded favicons.
+
+## Import validation and spreadsheet safety
+
+Viewer imports accept the native app identifier and schema version 4 only; local unversioned drafts retain compatible optional defaults. Validate types, unique IDs, category references, finite geometry/settings/dates, embedded raster signatures, 30-image count, 35 MiB actual bytes per image, and 220 MiB aggregate image-plus-metadata budget before committing. Reject external image URLs and SVG. Pre-read HTML ceiling is 661 MiB to accommodate JSON/base64 expansion and the viewer shell. Failed validation must preserve active work and the restore offer. Logical image dimensions remain independent of compressed dimensions. Previously oversized or SVG-based exports/drafts are not accepted under the stricter policy.
+
+Editor and viewer CSV use the same serializer: formula-like text receives a leading apostrophe before CSV escaping; actual numbers keep numeric meaning, and project text remains unchanged. The apostrophe may be visible in spreadsheet programs. Repository checks exercise these boundaries and normal native roundtrips in all four source/release variants.

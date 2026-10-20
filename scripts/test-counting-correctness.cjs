@@ -26,7 +26,7 @@ test('reset correction clears completion and Undo/Redo restore both correction a
   c.redo();assert.equal(c.P.images[0].completed,false);assert.deepEqual(c.P.images[0].adjustments,c.defaultAdjust());
 });
 function viewer(){
-  const build={lang:'en',safeJson:JSON.stringify,t:x=>x};vm.createContext(build);vm.runInContext(section('function viewerHtml(', 'async function saveViewer('),build);
+  const build={lang:'en',safeJson:JSON.stringify,t:x=>x};vm.createContext(build);vm.runInContext(section('function csvEsc(', 'function markersCsv(')+section('function viewerHtml(', 'async function saveViewer('),build);
   const html=build.viewerHtml({title:'Test',images:[],categories:[],settings:{}});
   const pending=[],renders=[],frames=[],nodes=new Map();
   const c={P:{images:['A','B','C'].map(name=>({name,dataUrl:name,markers:[name]}))},idx:0,img:{name:'A'},requestedIdx:0,showGeneration:0,L:{decodeFail:'Could not decode image.'},load:name=>new Promise((resolve,reject)=>pending.push({name,resolve,reject})),byId:id=>{if(!nodes.has(id))nodes.set(id,{textContent:'',disabled:false,querySelector:()=>null});return nodes.get(id);},ui(){},requestAnimationFrame:fn=>frames.push(fn)};
