@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Standardize the equivalent English local-processing label without changing application behavior or existing responsive Help layout.
+
 ## 1.0.4 - 2026-10-21
 
 - Auto-save Undo/Redo results and clear image completion when resetting corrections.

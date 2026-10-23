@@ -143,3 +143,5 @@ test('sample acceptance also retires the old restore offer',async()=>{
 test('continue still restores the saved draft after cancelling an import selection',async()=>{
   const f=setup();await f.c.init();await f.$('#restoreDraft').onclick();assert.equal(f.read('P.title'),'Previous');assert.equal(f.read('P.images[0].markers.length'),1);assert.equal(f.$('#restoreBanner').hidden,true);
 });
+
+test('local-processing badge uses the shared bilingual wording',()=>{const f=setup();assert.equal(f.read('I18N.ja.local'),'完全ローカル処理');assert.equal(f.read('I18N.en.local'),'Fully local processing');});
