@@ -21,7 +21,7 @@ async function main() {
         await page.goto(pathToFileURL(path.resolve(__dirname,'../dist/index.html')).href);
         await page.locator('#langBtn').waitFor();
         if(await page.locator('html').getAttribute('lang')!==language)await page.locator('#langBtn').click();
-        const badge=page.locator('[data-i18n="local"]');
+        const badge=page.locator('.intro [data-i18n="local"]');
         assert.equal(await badge.innerText(),language==='ja'?'完全ローカル処理':'Fully local processing');
         assert.equal(await badge.isVisible(), width > 620, label+': preserve existing mobile badge hiding');
         if(width > 620) assert.ok(await badge.evaluate(el=>{const r=el.getBoundingClientRect(),p=el.parentElement.getBoundingClientRect();return r.left>=p.left&&r.right<=p.right+1;}), label+': badge not clipped');
